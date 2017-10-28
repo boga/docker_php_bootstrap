@@ -1,4 +1,4 @@
-# Путь до докер файла указываем относительно директории в build
+# Dockerfile path is relative to build directory
 nginx:
  dockerfile: ./Dockerfile
  build: ./contaners/nginx
