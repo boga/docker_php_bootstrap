@@ -19,3 +19,18 @@ fpm:
  build: ./contaners/fpm
  volumes:
   - ./php-code:/var/www/html:rw
+ links:
+  - db
+
+db:
+ image: mariadb
+ ports:
+  - 8082:3306
+ volumes:
+  - ./database/mysql:/var/lib/mysql
+ environment:
+  MYSQL_DATABASE: docker-php
+  MYSQL_USER: docker-php
+  MYSQL_PASSWORD: docker-php-pass
+  MYSQL_ROOT_PASSWORD: example
+
