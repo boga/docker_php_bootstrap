@@ -12,20 +12,21 @@ Includes PHP, MySQL (actually, MariaDB), Xdebug (debugger and profiler) and Admi
 ### Xdebug 
 Xdebug can be turned off by editing XDEBUG_CONFIG environment key of fpm service 
 in docker-compose.yml: ```remote_enable=0```
+
 Intellij IDEA/PHPStorm Xdebug setup:
 1. set in Settings => Languages and Frameworks => PHP => Debug => DBGp Proxy 
 - `IDE KEY=<idekey in XDEBUG_CONFIG>`
 - `Host=<remote_host in XDEBUG_CONFIG>`
 - `Port 8083`
 2. Turn `Listen for debugger connections` on
-3. Put breakpoints and refresh page.
+3. Put breakpoints and refresh page
 
 Remote host IP is the address of machine IDE is working on.        
 
 ### Database
 Default credentials are in environment variables of db service
 
-How to use:
+## How to use:
 1. clone project
 2. change `remote_host` in docker-compose.yml => fpm => XDEBUG_CONFIG to current machine IP
 3. open browser and points in to main page  
