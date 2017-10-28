@@ -24,4 +24,13 @@ Remote host IP is the address of machine IDE is working on.
 
 ### Database
 Default credentials are in environment variables of db service
-  
+
+How to use:
+1. clone project
+2. change `remote_host` in docker-compose.yml => fpm => XDEBUG_CONFIG to current machine IP
+3. open browser and points in to main page  
+
+## Addresses
+- [Main page](http://localhost:8080): http://localhost:8080
+- [Adminer](http://localhost:8081): http://localhost:8081
+- [DB](mysql://root:example@localhost:8082): mysql://root:example@localhost:8082
