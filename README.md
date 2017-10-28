@@ -13,6 +13,8 @@ Includes PHP, MySQL (actually, MariaDB), Xdebug (debugger and profiler) and Admi
 Xdebug can be turned off by editing XDEBUG_CONFIG environment key of fpm service 
 in docker-compose.yml: ```remote_enable=0```
 
+```profiler_enable=1``` turns on profiler (and slow down performance, be careful) 
+
 Intellij IDEA/PHPStorm Xdebug setup:
 1. set in Settings => Languages and Frameworks => PHP => Debug => DBGp Proxy 
 - `IDE KEY=<idekey in XDEBUG_CONFIG>`
