@@ -1,5 +1,6 @@
+# Путь до докер файла указываем относительно директории в build
 nginx:
- dockerfile: ./Dockerfile # путь до докер файла указываем относительно директории в build
+ dockerfile: ./Dockerfile
  build: ./contaners/nginx
  ports:
   - 80:80
