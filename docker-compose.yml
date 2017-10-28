@@ -34,3 +34,9 @@ db:
   MYSQL_PASSWORD: docker-php-pass
   MYSQL_ROOT_PASSWORD: example
 
+adminer:
+ image: adminer
+ ports:
+  - 8081:8080
+ links:
+  - db
