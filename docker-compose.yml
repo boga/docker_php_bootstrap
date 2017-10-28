@@ -3,7 +3,7 @@ nginx:
  dockerfile: ./Dockerfile
  build: ./contaners/nginx
  ports:
-  - 80:80
+  - 8080:80
  volumes:
   - ./logs:/etc/logs/nginx
  volumes_from:
