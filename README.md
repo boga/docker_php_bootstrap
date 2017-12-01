@@ -31,9 +31,9 @@ Default credentials are in environment variables of db service
 ## How to use:
 1. clone project
 2. change `remote_host` in docker-compose.yml => fpm => XDEBUG_CONFIG to current machine IP
-2.1 (optionaly) change "docker" prefix in containers names to proper one (i.e. current project name) to avoid collizion with existing containers
-3. `docker-compose up` in project directory (or `docker-compose up -d` to daemonize)
-4. open browser and points in to main page  
+3. (optionaly) change "docker" prefix in containers names to proper one (i.e. current project name) to avoid collizion with existing containers
+4. `docker-compose up` in project directory (or `docker-compose up -d` to daemonize)
+5. open browser and points in to main page  
 
 ## Addresses
 - [Main page](http://localhost:8080): http://localhost:8080
