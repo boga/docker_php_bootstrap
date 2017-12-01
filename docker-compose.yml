@@ -33,16 +33,17 @@ fpm:
   - db
 
 db:
- image: mariadb
+ # Original MySQL image can't work properly on Win10 because of this bug: https://github.com/docker-library/percona/issues/42
+ image: bitnami/mariadb
  ports:
   - 8082:3306
  volumes:
-  - ./database/mysql:/var/lib/mysql
+  - ./database/mariadb:/bitnami
  environment:
-  MYSQL_DATABASE: docker-php
-  MYSQL_USER: docker-php
-  MYSQL_PASSWORD: docker-php-pass
-  MYSQL_ROOT_PASSWORD: example
+  - MARIADB_DATABASE=docker
+  - MARIADB_USER=docker
+  - MARIADB_PASSWORD=docker
+  - MARIADB_ROOT_PASSWORD=example
 
 adminer:
  image: adminer
