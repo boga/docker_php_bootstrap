@@ -1,5 +1,6 @@
 # Dockerfile path is relative to build directory
 nginx:
+ container_name: docker_nginx
  dockerfile: ./Dockerfile
  build: ./contaners/nginx
  ports:
@@ -16,6 +17,7 @@ nginx:
   - fpm
 
 fpm:
+ container_name: docker_fpm
  dockerfile: ./Dockerfile
  build: ./contaners/fpm
  ports:
@@ -33,6 +35,7 @@ fpm:
   - db
 
 db:
+ container_name: docker_db
  # Original MySQL image can't work properly on Win10 because of this bug: https://github.com/docker-library/percona/issues/42
  image: bitnami/mariadb
  ports:
@@ -46,6 +49,7 @@ db:
   - MARIADB_ROOT_PASSWORD=example
 
 adminer:
+ container_name: docker_adminer
  image: adminer
  ports:
   - 8081:8080
