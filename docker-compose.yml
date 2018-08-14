@@ -1,45 +1,40 @@
-# Dockerfile path is relative to build directory
 nginx:
- container_name: docker_nginx
- dockerfile: ./Dockerfile
- build: ./contaners/nginx
+ container_name: ${PROJECT_NAME}_nginx
+ image: nginx:alpine
  ports:
-  - 8080:80
+    # To avoid conflicts with default Nginx configuration we bind our app to 81 port
+    - ${NGINX_PORT}:81
  volumes:
   - ./logs:/etc/logs/nginx
+  - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
  volumes_from:
   - fpm:rw
  environment:
-  - NGINX_HOST=localhost
-  - NGINX_PORT=80
- command: nginx -g "daemon off;"
+  - NGINX_HOST=nginx
+  - NGINX_PORT=81
  links:
   - fpm
 
 fpm:
- container_name: docker_fpm
- dockerfile: ./Dockerfile
- build: ./contaners/fpm
- ports:
- - 8083:9000
+ container_name: ${PROJECT_NAME}_fpm
+ image: themiju/php:2018-08-14
+#  ports:
+#  - ${XDEBUG_PORT}:${XDEBUG_REMOTE_PORT}
  environment:
-  XDEBUG_CONFIG: "default_enable=0 remote_enable=1 remote_autostart=0
-    remote_connect_back=0 idekey=IDEAKEY remote_host=192.168.1.3
-    profiler_enable=0 profiler_output_dir=/xdebug/profiler
-    profiler_output_name=cachegrind.out.%u.%p
+  XDEBUG_CONFIG: "
+    remote_port=${XDEBUG_REMOTE_PORT}
   "
  volumes:
-  - ./php-code:/var/www/html:rw
-  - ./logs/xdebug_profiler:/xdebug/profiler:rw
+  - ./:/var/www/html:rw
+  - ./logs/xdebug:/xdebug:rw
  links:
   - db
 
 db:
- container_name: docker_db
- # Original MySQL image can't work properly on Win10 because of this bug: https://github.com/docker-library/percona/issues/42
+ container_name: ${PROJECT_NAME}_db
  image: bitnami/mariadb
  ports:
-  - 8082:3306
+  - ${DB_PORT}:3306
  volumes:
   - ./database/mariadb:/bitnami
  environment:
@@ -49,9 +44,9 @@ db:
   - MARIADB_ROOT_PASSWORD=example
 
 adminer:
- container_name: docker_adminer
+ container_name: ${PROJECT_NAME}_adminer
  image: adminer
  ports:
-  - 8081:8080
+  - ${ADMINER_PORT}:8080
  links:
   - db
