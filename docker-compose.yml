@@ -23,6 +23,7 @@ fpm:
  environment:
   XDEBUG_CONFIG: "
     remote_port=${XDEBUG_REMOTE_PORT}
+    remote_host=${XDEBUG_REMOTE_HOST}
   "
  volumes:
   - ./:/var/www/html:rw
