@@ -21,6 +21,8 @@ fpm:
 #  ports:
 #  - ${XDEBUG_PORT}:${XDEBUG_REMOTE_PORT}
  environment:
+  # For PHPStorm: should match server name in Settings / Preferences | Languages & Frameworks | PHP | Servers
+  PHP_IDE_CONFIG: "serverName=${PHP_IDE_CONFIG}"
   XDEBUG_CONFIG: "
     remote_port=${XDEBUG_REMOTE_PORT}
     remote_host=${XDEBUG_REMOTE_HOST}
