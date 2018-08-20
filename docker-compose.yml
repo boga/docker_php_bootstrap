@@ -28,7 +28,7 @@ fpm:
     remote_host=${XDEBUG_REMOTE_HOST}
   "
  volumes:
-  - ./:/var/www/html:rw
+  - ./code:/var/www/html:rw
   - ./logs/xdebug:/xdebug:rw
  links:
   - db
