@@ -1,55 +1,72 @@
-nginx:
- container_name: ${PROJECT_NAME}_nginx
- image: nginx:alpine
- ports:
-    # To avoid conflicts with default Nginx configuration we bind our app to 81 port
-    - ${NGINX_PORT}:81
- volumes:
-  - ./logs:/etc/logs/nginx
-  - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
- volumes_from:
-  - fpm:rw
- environment:
-  - NGINX_HOST=nginx
-  - NGINX_PORT=81
- links:
-  - fpm
+version: "3"
 
-fpm:
- container_name: ${PROJECT_NAME}_fpm
- image: themiju/php:2018-08-14
-#  ports:
-#  - ${XDEBUG_PORT}:${XDEBUG_REMOTE_PORT}
- environment:
-  # For PHPStorm: should match server name in Settings / Preferences | Languages & Frameworks | PHP | Servers
-  PHP_IDE_CONFIG: "serverName=${PHP_IDE_CONFIG}"
-  XDEBUG_CONFIG: "
-    remote_port=${XDEBUG_REMOTE_PORT}
-    remote_host=${XDEBUG_REMOTE_HOST}
-  "
- volumes:
-  - ./code:/var/www/html:rw
-  - ./logs/xdebug:/xdebug:rw
- links:
-  - db
+volumes:
+  database:
+  app_code:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/code
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/logs
 
-db:
- container_name: ${PROJECT_NAME}_db
- image: bitnami/mariadb
- ports:
-  - ${DB_PORT}:3306
- volumes:
-  - ./database/mariadb:/bitnami
- environment:
-  - MARIADB_DATABASE=docker
-  - MARIADB_USER=docker
-  - MARIADB_PASSWORD=docker
-  - MARIADB_ROOT_PASSWORD=example
-
-adminer:
- container_name: ${PROJECT_NAME}_adminer
- image: adminer
- ports:
-  - ${ADMINER_PORT}:8080
- links:
-  - db
+services:
+  nginx:
+    container_name: ${PROJECT_NAME}_nginx
+    image: nginx:alpine
+    ports:
+      # To avoid conflicts with default Nginx configuration we bind our app to 81 port
+     - ${NGINX_PORT}:81
+    volumes:
+     - logs:/etc/logs
+     - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+     - app_code:/var/www/html:rw
+    environment:
+      NGINX_HOST: nginx
+      NGINX_PORT: 81
+    links:
+     - fpm
+  
+  fpm:
+    container_name: ${PROJECT_NAME}_fpm
+    image: themiju/php:2018-08-21
+    ports:
+     - ${XDEBUG_PORT}:${XDEBUG_REMOTE_PORT}
+    environment:
+      # For PHPStorm: should match server name in Settings / Preferences | Languages & Frameworks | PHP | Servers
+      PHP_IDE_CONFIG: "serverName=${PHP_IDE_CONFIG}"
+      XDEBUG_CONFIG: "
+        remote_port=${XDEBUG_REMOTE_PORT}
+        remote_host=${XDEBUG_REMOTE_HOST}
+      "
+    volumes:
+     - app_code:/var/www/html:rw
+     - logs:/logs:rw
+    links:
+     - db
+  
+  db:
+    container_name: ${PROJECT_NAME}_db
+    image: bitnami/mariadb
+    ports:
+     - ${DB_PORT}:3306
+    volumes:
+     - database:/bitnami
+    environment:
+      MARIADB_DATABASE: docker
+      MARIADB_USER: docker
+      MARIADB_PASSWORD: docker
+      MARIADB_ROOT_PASSWORD: example
+   
+  adminer:
+    container_name: ${PROJECT_NAME}_adminer
+    image: adminer
+    ports:
+     - ${ADMINER_PORT}:8080
+    links:
+     - db
