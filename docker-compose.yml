@@ -19,6 +19,7 @@ services:
   nginx:
     container_name: ${PROJECT_NAME}_nginx
     image: nginx:alpine
+    restart: on-failure
     ports:
       # To avoid conflicts with default Nginx configuration we bind our app to 81 port
      - ${NGINX_PORT}:81
@@ -35,6 +36,7 @@ services:
   fpm:
     container_name: ${PROJECT_NAME}_fpm
     image: themiju/php:2018-08-21
+    restart: on-failure
     ports:
      - ${XDEBUG_PORT}:${XDEBUG_REMOTE_PORT}
     environment:
@@ -53,6 +55,7 @@ services:
   db:
     container_name: ${PROJECT_NAME}_db
     image: bitnami/mariadb
+    restart: on-failure
     ports:
      - ${DB_PORT}:3306
     volumes:
@@ -66,6 +69,7 @@ services:
   adminer:
     container_name: ${PROJECT_NAME}_adminer
     image: adminer
+    restart: on-failure
     ports:
      - ${ADMINER_PORT}:8080
     links:
